@@ -1,0 +1,76 @@
+/* Base: paleta, tipografía, reset y botones.
+   Los colores son tokens en :root; el tema oscuro solo redefine los tokens. */
+:root {
+  --carbon: #221d18;
+  --hueso: #efe5d0;
+  --ocre: #d49a3c;
+  --hematita: #b3452b;
+
+  /* Portada: misma ilustración en tema claro y oscuro */
+  --cielo-alto: #f2d9a4;
+  --cielo-bajo: #e3b066;
+  --sierra-lejos: #b0603f;
+  --sierra-medio: #6c7a3d;
+  --curva-hero: rgba(255, 241, 214, .32);
+  --sol: #f7ecd2;
+
+  --ground: #d8c6a0;
+  --reserva-fill: rgba(93, 138, 60, .38);
+  --reserva-line: #3f6a2a;
+  --halo: #fff6dd;
+  --panel: #2a241e;
+  --panel-ink: #efe5d0;
+  --panel-soft: #b9ab92;
+  --panel-line: #4a4136;
+  --panel-hover: #373029;
+  --focus: #ffd27a;
+  --agua: #3b7d9c;
+  --yo: #2f86c7;
+
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #3b3329;
+    --reserva-fill: rgba(125, 176, 82, .3);
+    --reserva-line: #8fc263;
+    --halo: #f3e6c4;
+    --panel: #181410;
+    --panel-hover: #251f19;
+    --panel-line: #3a3228;
+    --agua: #7fb8d0;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #3b3329;
+  --reserva-fill: rgba(125, 176, 82, .3);
+  --reserva-line: #8fc263;
+  --halo: #f3e6c4;
+  --panel: #181410;
+  --panel-hover: #251f19;
+  --panel-line: #3a3228;
+  --agua: #7fb8d0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--panel);
+  color: var(--panel-ink);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reserva Los Manantiales | Mapa de senderos</title>
+<meta name="description" content="Mapa interactivo de senderos, miradores y arroyos de la Reserva Hídrica Natural Municipal Los Manantiales, Río Ceballos, Córdoba.">
+<meta name="theme-color" content="#2a241e">
+<link rel="icon" type="image/png" href="img/logo-manantiales.png">
+
+<!-- Vista previa al compartir el enlace (WhatsApp, Facebook, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:title" content="Reserva Los Manantiales | Mapa de senderos">
+<meta property="og:description" content="Senderos, miradores y arroyos de la Reserva Hídrica Natural Municipal Los Manantiales, Río Ceballos, Córdoba.">
+<meta property="og:image" content="img/logo-manantiales.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Caveat+Brush&display=swap">
+<link rel="stylesheet" href="css/vendor/leaflet.min.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/portada.css">
+<link rel="stylesheet" href="css/mapa.css">
+<link rel="stylesheet" href="css/panel.css">
+<link rel="stylesheet" href="css/secciones.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <!-- Región relativa a cada trazo: una región fija enorme hacía que cada redibujado rasterizara millones de píxeles -->
+  <filter id="rough" x="-25%" y="-25%" width="150%" height="150%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<!-- ================= Portada ================= -->
+<header class="hero">
+  <svg class="hero-arte" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="rough-hero" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <path id="sierra-fondo" d="M0 380 C 120 340, 210 280, 330 310 S 520 250, 640 280 S 820 230, 930 270 S 1120 220, 1240 260 S 1380 250, 1440 270 V620 H0 Z"/>
+      <path id="sierra-medio" d="M0 455 C 140 405, 260 380, 400 410 S 640 360, 760 400 S 980 340, 1110 380 S 1330 370, 1440 390 V620 H0 Z"/>
+      <path id="sierra-frente" d="M0 540 C 160 500, 300 510, 440 525 S 700 480, 860 510 S 1120 490, 1260 515 S 1400 510, 1440 520 V620 H0 Z"/>
+      <clipPath id="clip-fondo"><use href="#sierra-fondo"/></clipPath>
+      <clipPath id="clip-medio"><use href="#sierra-medio"/></clipPath>
+    </defs>
+    <g filter="url(#rough-hero)">
+      <!-- Sol saliendo detrás de las sierras -->
+      <g class="hero-sol">
+        <circle cx="1170" cy="215" r="40"/>
+        <circle cx="1170" cy="215" r="58" class="anillo"/>
+        <circle cx="1170" cy="215" r="76" class="anillo fino"/>
+      </g>
+      <!-- Las sierras se dibujan en 620 de alto y se aplanan a la franja de abajo -->
+      <g transform="translate(0 420) scale(1 .37) translate(0 -620)">
+        <use href="#sierra-fondo" class="sierra-fondo"/>
+        <g clip-path="url(#clip-fondo)" class="curvas-hero">
+          <use href="#sierra-fondo" transform="translate(0 40)"/>
+          <use href="#sierra-fondo" transform="translate(0 80)"/>
+          <use href="#sierra-fondo" transform="translate(0 120)"/>
+        </g>
+        <use href="#sierra-medio" class="sierra-medio"/>
+        <g clip-path="url(#clip-medio)" class="curvas-hero">
+          <use href="#sierra-medio" transform="translate(0 38)"/>
+          <use href="#sierra-medio" transform="translate(0 76)"/>
+          <use href="#sierra-medio" transform="translate(0 114)"/>
+        </g>
+        <use href="#sierra-frente" class="sierra-frente"/>
+      </g>
+    </g>
+  </svg>
+  <div class="hero-in">
+    <img class="hero-logo" src="img/logo-manantiales.png" width="128" height="128" alt="Logo de la Reserva Hídrica Natural Municipal Los Manantiales">
+    <div class="hero-texto">
+      <p class="hero-lugar">Río Ceballos, Sierras Chicas de Córdoba</p>
+      <h1>Los Manantiales</h1>
+      <p class="hero-bajada">Reserva Hídrica Natural Municipal. Protege unas 1.050 hectáreas de bosque serrano en la cuenca del arroyo Mal Paso.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= Mapa ================= -->
+  <section class="seccion-mapa" id="mapa" aria-labelledby="titulo-mapa">
+    <h2 class="sr-only" id="titulo-mapa">Mapa de la reserva</h2>
+    <div class="mapa-app">
+      <div class="panel" id="panel" role="region" aria-label="Senderos y lugares de la reserva"></div>
+      <p class="sr-only" id="anuncio" aria-live="polite"></p>
+      <div class="map-wrap">
+        <button class="reset" id="reset" type="button">Ver toda la reserva</button>
+        <p class="aviso" id="aviso" role="status" hidden></p>
+        <p class="pista" id="pista" aria-hidden="true" hidden></p>
+        <div id="map" role="region" aria-label="Mapa interactivo de la reserva. La lista del panel tiene los mismos senderos y lugares."></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Debajo del mapa ================= -->
+  <div class="bloques" id="bloques">
+    <section class="bloque" id="leer-mapa" aria-labelledby="titulo-leer">
+      <h2 id="titulo-leer">Cómo leer el mapa</h2>
+      <ul class="leyenda" id="leyenda"></ul>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
+        integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

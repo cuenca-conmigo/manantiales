@@ -1,0 +1,28 @@
+/* Sección debajo del mapa: Cómo leer el mapa, a todo el ancho */
+.bloques {
+  display: grid;
+  gap: 2.5rem;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+}
+.bloque h2 {
+  margin: 0 0 .75rem;
+  font: 400 2.4rem/1 "Caveat Brush", "Comic Sans MS", cursive;
+  color: var(--ocre);
+}
+.bloque p { margin: 0 0 .75rem; max-width: 46ch; }
+
+/* Cómo leer el mapa: columnas que se acomodan al ancho; cada categoría empieza una fila nueva */
+.leyenda {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: .6rem 2rem;
+}
+.leyenda li { display: grid; grid-template-columns: 54px 1fr; align-items: center; gap: .9rem; }
+.leyenda .ley-grupo { display: block; grid-column: 1 / -1; margin-top: .9rem; font-weight: 700; color: var(--ocre); }
+.leyenda svg { display: block; width: 54px; height: 18px; }
+.ley-pin { display: grid; place-items: center; width: 54px; }
+.ley-pin svg { width: 34px; height: 34px; }

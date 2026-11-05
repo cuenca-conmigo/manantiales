@@ -1,0 +1,45 @@
+/* Portada: logo, título e ilustración de las sierras (el SVG está en index.html) */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--cielo-alto), var(--cielo-bajo) 70%);
+  color: var(--carbon);
+  padding-block: clamp(2rem, 4.5vw, 3.25rem) clamp(8.5rem, 11vw, 9.5rem);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter-r);
+}
+.hero::after {               /* grano, igual que el mapa */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .35;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .13  0 0 0 0 .1  0 0 0 0 .07  0 0 0 .5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.hero-arte { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-sol circle { fill: var(--sol); stroke: var(--hematita); stroke-width: 3; }
+.hero-sol .anillo { fill: none; stroke-width: 4; stroke-dasharray: 2 14; stroke-linecap: round; }
+.hero-sol .anillo.fino { stroke-width: 2.5; stroke-dasharray: 1 18; opacity: .7; }
+.sierra-fondo { fill: var(--sierra-lejos); }
+.sierra-medio { fill: var(--sierra-medio); }
+.sierra-frente { fill: var(--panel); }
+.curvas-hero use { fill: none; stroke: var(--curva-hero); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+
+.hero-in {
+  position: relative; z-index: 1; max-width: 72rem; margin-inline: auto;
+  display: flex; align-items: center; gap: clamp(1rem, 3vw, 2rem);
+}
+.hero-logo {
+  flex: none; width: clamp(84px, 11vw, 128px); height: auto;
+  filter: drop-shadow(0 4px 10px rgba(60, 30, 0, .3));
+}
+.hero-texto { min-width: 0; }
+.hero-lugar { margin: 0 0 .25rem; font-weight: 700; font-size: 1.05rem; }
+.hero h1 {
+  margin: 0 0 1rem;
+  font: 400 clamp(3rem, 9.5vw, 6.25rem)/.9 "Caveat Brush", "Comic Sans MS", cursive;
+  letter-spacing: .005em;
+  text-wrap: balance;
+}
+.hero-bajada { margin: 0; max-width: 36ch; font-size: clamp(1.05rem, 2.2vw, 1.25rem); }
+
+@media (max-width: 520px) {
+  .hero-in { flex-direction: column; align-items: flex-start; }
+  .hero-texto { width: 100%; }
+}

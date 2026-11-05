@@ -1,0 +1,20 @@
+# En el repo va solo lo que usa la página: index.html, css/, js/, data/, img/ y media/
+
+# Configuración de herramientas del equipo (skills de agentes, editor)
+.agents/
+.claude/
+agent/
+skills-lock.json
+.vscode/
+
+# Fotos, videos y audios originales del relevamiento (para la web se copian a media/)
+images/
+
+# Scripts de conversión, fuentes de datos y material viejo: se usan para armar el sitio, no forman parte de él
+auxiliar/
+dist/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
