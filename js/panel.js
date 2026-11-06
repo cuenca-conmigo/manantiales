@@ -79,7 +79,7 @@ export function crearPanel({ el, anuncio, map, vista, senderos, lugares, recorri
 
       ${p.audio ? `
       <section class="ficha-bloque" aria-labelledby="ficha-audio">
-        <h4 id="ficha-audio">Escuchar</h4>
+        <h4 id="ficha-audio">${esc(p.audio_titulo || 'Escuchar')}</h4>
         <audio class="ficha-audio" controls preload="none" src="${esc(p.audio)}">
           Este navegador no puede reproducir el audio. <a href="${esc(p.audio)}">Descargarlo</a>.
         </audio>

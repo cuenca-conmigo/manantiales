@@ -61,7 +61,7 @@ Todo lo que muestra el mapa sale de `data/reserva.geojson`. Cada elemento lleva 
 | `reserva` | Polygon | `nombre` | Límite (obligatorio, uno solo) |
 | `arroyo` | LineString | `nombre` | Línea celeste con su nombre al pasar el mouse |
 | `sendero` | LineString | `id`, `nombre`, `dificultad` (`alta`, `media`, `baja`), `descripcion`, opcionales `distancia_km` y `duracion` | Línea resaltada; aparece en el panel y en la leyenda |
-| `poi` | Point | `id`, `subtipo`, `nombre`, opcionales `categoria`, `subcategoria`, `descripcion`, `audio`, `fotos` y `videos` (listas de rutas) | Ícono; aparece en el panel y en la leyenda, agrupado por `categoria`. Al tocarlo se abre su ficha |
+| `poi` | Point | `id`, `subtipo`, `nombre`, opcionales `categoria`, `subcategoria`, `descripcion`, `audio`, `audio_titulo` (título del audio en la ficha; si falta, "Escuchar"), `fotos` y `videos` (listas de rutas) | Ícono; aparece en el panel y en la leyenda, agrupado por `categoria`. Al tocarlo se abre su ficha |
 | `recorrido` | LineString o MultiLineString | `sitio` (id de un `poi`), `nombre`, opcional `estilo` (`agua`) | Oculto; se resalta mientras ese sitio está elegido. Hay dos: el Camino Herradura (entre sus dos puntos de la planilla) y el Arroyo Mal Paso (todo el arroyo, en celeste) |
 
 Subtipos de lugar con ícono (en `js/iconos.js`):
