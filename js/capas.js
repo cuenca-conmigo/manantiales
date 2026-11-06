@@ -1,6 +1,6 @@
 /* Dibuja los elementos del GeoJSON sobre el mapa */
 import { ZOOM, NOMBRE_CORTO } from './config.js';
-import { esc, ll, largoKm, fmtTiempo, vuelo } from './util.js';
+import { esc, ll, vuelo } from './util.js';
 import { pinSvg } from './iconos.js';
 
 const tooltip = { sticky: true, className: 'hand-tip', direction: 'top', offset: [0, -8] };
@@ -15,25 +15,7 @@ export function dibujarArroyos(map, arroyos) {
   });
 }
 
-/* Cada sendero: trazo de resalte, trazo visible y trazo ancho invisible para tocar fácil.
-   Devuelve { id: { f, halo, line, km, tiempo } } */
-export function dibujarSenderos(map, senderos, alTocar) {
-  const porId = {};
-  senderos.forEach(f => {
-    const p = f.properties, pts = f.geometry.coordinates.map(ll);
-    const halo = L.polyline(pts, { className: 'trail-halo', interactive: false }).addTo(map);
-    const line = L.polyline(pts, { className: `trail-line trail-${p.dificultad}`, interactive: false }).addTo(map);
-    L.polyline(pts, { className: 'trail-hit', color: '#000', weight: 26, opacity: 0, bubblingMouseEvents: false })
-      .bindTooltip(esc(p.nombre), tooltip)
-      .on('click', () => alTocar(p.id))
-      .addTo(map);
-    const km = p.distancia_km || largoKm(f.geometry.coordinates);    // la distancia oficial, si hay, manda
-    porId[p.id] = { f, halo, line, km, tiempo: p.duracion || fmtTiempo(km, p.dificultad) };
-  });
-  return porId;
-}
-
-/* Recorridos asociados a un sitio (el Camino Herradura, el Arroyo Mal Paso): están ocultos y se resaltan al elegir el sitio.
+/* Recorridos asociados a un sitio (La Herradura, el Arroyo Mal Paso): están ocultos y se resaltan al elegir el sitio.
    Aceptan LineString o MultiLineString; properties.estilo = 'agua' los pinta como arroyo.
    Devuelve { idDelSitio: { halo, line } } */
 export function dibujarRecorridos(map, recorridos) {

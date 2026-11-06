@@ -1,31 +1,22 @@
-/* Panel lateral: listado de senderos y lugares, ficha de detalle y selección en el mapa.
+/* Panel lateral: listado de sitios, ficha de cada uno y selección en el mapa.
    Es la alternativa accesible al mapa: todo lo que se puede tocar en el mapa también está acá. */
 import { ZOOM } from './config.js';
 import { carruselHtml, activarCarruseles, mediosDe } from './carrusel.js';
-import { esc, ll, fmtKm, capital, vuelo } from './util.js';
-import { pinSvg, etiquetaLugar, muestraSendero, ICONO_VOLVER } from './iconos.js';
+import { esc, ll, vuelo } from './util.js';
+import { pinSvg, etiquetaLugar, ICONO_VOLVER } from './iconos.js';
 import { porCategoria } from './datos.js';
 
 /* La subcategoría del relevamiento, si la hay; si no, el nombre del tipo de ícono */
 const tipoDeLugar = p => p.subcategoria || etiquetaLugar(p.subtipo);
 
-export function crearPanel({ el, anuncio, map, vista, senderos, lugares, recorridos = {}, filtros }) {
-  let sel = null;          // { tipo: 'sendero' | 'lugar', id }
+export function crearPanel({ el, anuncio, map, vista, lugares, recorridos = {}, filtros }) {
+  let sel = null;          // id del sitio elegido
 
   function listado() {
     const visibles = Object.values(lugares).map(o => o.f).filter(f => filtros.esVisible(f.properties));
-    const itemsSenderos = Object.values(senderos).map(t => {
-      const p = t.f.properties;
-      return `<li><button class="item" type="button" data-tipo="sendero" data-id="${esc(p.id)}">
-        ${muestraSendero(p.dificultad)}
-        <span><span class="name">${esc(p.nombre)}</span><br><span class="meta">Dificultad ${esc(p.dificultad)}</span></span>
-        <span class="dist">${fmtKm(t.km)}</span></button></li>`;
-    }).join('');
-    const haySenderos = itemsSenderos.length > 0;
     el.innerHTML = `
-      <p class="hint">${haySenderos ? 'Tocá un sendero o un ícono del mapa para ver sus datos.' : 'Tocá un ícono del mapa para ver sus datos.'}</p>
+      <p class="hint">Tocá un ícono del mapa para ver sus datos.</p>
       ${filtros.html()}
-      ${haySenderos ? `<h3>Senderos</h3><ul class="list">${itemsSenderos}</ul>` : ''}
       ${visibles.length
         ? porCategoria(visibles).map(([cat, fs]) => `<h3>${esc(cat)}</h3><ul class="list">${fs.map(itemLugar).join('')}</ul>`).join('')
         : '<p class="hint vacio">No hay sitios a la vista. Prendé alguna categoría o subcategoría de arriba.</p>'}`;
@@ -45,27 +36,14 @@ export function crearPanel({ el, anuncio, map, vista, senderos, lugares, recorri
 
   function itemLugar(f) {
     const p = f.properties;
-    return `<li><button class="item" type="button" data-tipo="lugar" data-id="${esc(p.id)}">
+    return `<li><button class="item" type="button" data-id="${esc(p.id)}">
       <span class="swatch-poi">${pinSvg(p.subtipo)}</span>
       <span><span class="name">${esc(p.nombre)}</span><br><span class="meta">${esc(tipoDeLugar(p))}</span></span>
       <span></span></button></li>`;
   }
 
-  function ficha(tipo, id) {
+  function ficha(id) {
     const volver = `<button class="btn" type="button" data-accion="volver">${ICONO_VOLVER}Volver al listado</button>`;
-    if (tipo === 'sendero') {
-      const t = senderos[id], p = t.f.properties;
-      el.innerHTML = `<div class="detail">${volver}
-        <p class="kicker">Sendero</p>
-        <h3 class="titulo" tabindex="-1" data-titulo>${esc(p.nombre)}</h3>
-        <dl class="stats">
-          <div class="stat"><dt>Distancia</dt><dd class="big">${fmtKm(t.km)}</dd></div>
-          <div class="stat"><dt>Dificultad</dt><dd><span class="badge ${esc(p.dificultad)}">${muestraSendero(p.dificultad)}${esc(capital(p.dificultad))}</span></dd></div>
-          <div class="stat"><dt>Tiempo aproximado</dt><dd>${esc(t.tiempo)}</dd></div>
-        </dl>
-        <p class="desc">${esc(p.descripcion || '')}</p></div>`;
-      return p.nombre;
-    }
     const p = lugares[id].f.properties;
     el.innerHTML = `<div class="detail">${volver}
       <p class="kicker">${esc(tipoDeLugar(p))}</p>
@@ -99,35 +77,26 @@ export function crearPanel({ el, anuncio, map, vista, senderos, lugares, recorri
   /* Marca en el mapa lo seleccionado y atenúa el resto */
   function pintar() {
     const marcar = (capa, clase, si) => { const e = capa.getElement && capa.getElement(); if (e) e.classList.toggle(clase, si); };
-    Object.entries(senderos).forEach(([id, t]) => {
-      const es = !!sel && sel.tipo === 'sendero' && sel.id === id;
-      marcar(t.halo, 'is-selected', es);
-      marcar(t.line, 'is-selected', es);
-      marcar(t.line, 'is-dim', !!sel && !es);
-    });
     Object.entries(lugares).forEach(([id, o]) => {
-      const es = !!sel && sel.tipo === 'lugar' && sel.id === id;
-      marcar(o.marker, 'is-selected', es);
-      marcar(o.marker, 'is-dim', !!sel && !es);
+      marcar(o.marker, 'is-selected', sel === id);
+      marcar(o.marker, 'is-dim', sel !== null && sel !== id);
     });
-    /* El recorrido de un sitio (Camino Herradura) se ve solo mientras ese sitio está elegido */
+    /* El recorrido de un sitio (La Herradura, el Arroyo Mal Paso) se ve solo mientras ese sitio está elegido */
     Object.entries(recorridos).forEach(([id, r]) => {
-      const es = !!sel && sel.tipo === 'lugar' && sel.id === id;
-      marcar(r.halo, 'is-selected', es);
-      marcar(r.line, 'is-selected', es);
+      marcar(r.halo, 'is-selected', sel === id);
+      marcar(r.line, 'is-selected', sel === id);
     });
   }
 
-  function seleccionar(tipo, id, { desdeMapa = false } = {}) {
-    if (!(tipo === 'sendero' ? senderos[id] : lugares[id])) return;
-    sel = { tipo, id };
+  function seleccionar(id, { desdeMapa = false } = {}) {
+    if (!lugares[id]) return;
+    sel = id;
     pintar();
     cortarAudio();
-    const nombre = ficha(tipo, id);
+    const nombre = ficha(id);
     anuncio.textContent = `${nombre}. Datos en el panel.`;
     el.scrollTop = 0;
-    if (tipo === 'sendero') map.flyToBounds(senderos[id].line.getBounds(), { ...vuelo(0.6), padding: [70, 70] });
-    else if (recorridos[id]) map.flyToBounds(recorridos[id].line.getBounds(), { ...vuelo(0.6), padding: [50, 50] });
+    if (recorridos[id]) map.flyToBounds(recorridos[id].line.getBounds(), { ...vuelo(0.6), padding: [50, 50] });
     else map.flyTo(ll(lugares[id].f.geometry.coordinates), Math.max(map.getZoom(), ZOOM.lugar), vuelo(0.6));
     if (!desdeMapa) el.querySelector('[data-titulo]').focus({ preventScroll: true });
   }
@@ -141,7 +110,7 @@ export function crearPanel({ el, anuncio, map, vista, senderos, lugares, recorri
     anuncio.textContent = 'Listado de sitios.';
     map.flyToBounds(vista, vuelo(0.6));
     if (devolverFoco && anterior) {
-      const b = el.querySelector(`[data-tipo="${anterior.tipo}"][data-id="${CSS.escape(anterior.id)}"]`);
+      const b = el.querySelector(`.item[data-id="${CSS.escape(anterior)}"]`);
       if (b) b.focus();
     }
   }
@@ -150,7 +119,7 @@ export function crearPanel({ el, anuncio, map, vista, senderos, lugares, recorri
     if (filtros.manejarClic(e.target)) return refrescarFiltros(e.target.closest('[data-filtro]'));
     if (e.target.closest('[data-accion="volver"]')) return limpiar({ devolverFoco: true });
     const item = e.target.closest('.item');
-    if (item) seleccionar(item.dataset.tipo, item.dataset.id);
+    if (item) seleccionar(item.dataset.id);
   });
 
   listado();

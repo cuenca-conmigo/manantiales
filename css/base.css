@@ -25,7 +25,6 @@
   --panel-hover: #373029;
   --focus: #ffd27a;
   --agua: #3b7d9c;
-  --yo: #2f86c7;
 
   --gutter: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));

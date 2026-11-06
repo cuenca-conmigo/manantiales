@@ -24,7 +24,6 @@ export function separarPorTipo(geo) {
   if (!reserva) throw new Error('El GeoJSON no tiene un elemento con tipo "reserva" (el límite).');
   return {
     reserva,
-    senderos: deTipo('sendero'),
     lugares: deTipo('poi'),
     arroyos: deTipo('arroyo'),
     recorridos: deTipo('recorrido')       // caminos que se resaltan al elegir su sitio (properties.sitio)

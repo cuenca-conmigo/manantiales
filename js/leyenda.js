@@ -1,25 +1,16 @@
 /* "Cómo leer el mapa": muestra solo lo que hay en los datos, con los lugares agrupados por categoría */
-import { pinSvg, etiquetaLugar, muestraSendero } from './iconos.js';
+import { pinSvg, etiquetaLugar } from './iconos.js';
 import { porCategoria } from './datos.js';
 import { esc } from './util.js';
 
-const DIFICULTADES = [
-  ['alta', 'Sendero de dificultad alta: línea continua'],
-  ['media', 'Sendero de dificultad media: línea de trazos'],
-  ['baja', 'Sendero de dificultad baja: línea de puntos']
-];
-
-export function dibujarLeyenda(el, { senderos, lugares }) {
+export function dibujarLeyenda(el, { lugares }) {
   const pin = tipo => `<span class="ley-pin">${pinSvg(tipo)}</span>`;
   const linea = (stroke, w, d = 'M4 9 H50') => `<svg viewBox="0 0 54 18" aria-hidden="true"><path d="${d}" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round"/></svg>`;
   const item = ([muestra, texto]) => `<li>${muestra}<span>${esc(texto)}</span></li>`;
-  const dificultades = new Set(senderos.map(f => f.properties.dificultad));
 
   const generales = [
-    ...DIFICULTADES.filter(([d]) => dificultades.has(d)).map(([d, t]) => [muestraSendero(d), t]),
     [linea('var(--panel-soft)', 2), 'Calles y caminos vehiculares: los muestra el mapa base, sin resaltar'],
-    [linea('var(--agua)', 3, 'M3 12 C12 4 18 15 28 9 S44 5 51 8'), 'Cauce de arroyo'],
-    ['<svg viewBox="0 0 54 18" aria-hidden="true"><circle cx="27" cy="9" r="6" fill="#2f86c7" stroke="#fff" stroke-width="2.5"/></svg>', 'Tu ubicación, si la compartís']
+    [linea('var(--agua)', 3, 'M3 12 C12 4 18 15 28 9 S44 5 51 8'), 'Cauce de arroyo']
   ];
 
   /* Un ícono por tipo de lugar, dentro de su categoría. Si una subcategoría usa varios íconos

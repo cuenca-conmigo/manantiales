@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Reserva Los Manantiales | Mapa de senderos</title>
-<meta name="description" content="Mapa interactivo de senderos, miradores y arroyos de la Reserva Hídrica Natural Municipal Los Manantiales, Río Ceballos, Córdoba.">
+<title>Reserva Los Manantiales | Mapa de la reserva</title>
+<meta name="description" content="Mapa interactivo de los sitios patrimoniales, naturales e históricos de la Reserva Hídrica Natural Municipal Los Manantiales, Río Ceballos, Córdoba.">
 <meta name="theme-color" content="#2a241e">
 <link rel="icon" type="image/png" href="img/logo-manantiales.png">
 
 <!-- Vista previa al compartir el enlace (WhatsApp, Facebook, etc.) -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_AR">
-<meta property="og:title" content="Reserva Los Manantiales | Mapa de senderos">
-<meta property="og:description" content="Senderos, miradores y arroyos de la Reserva Hídrica Natural Municipal Los Manantiales, Río Ceballos, Córdoba.">
+<meta property="og:title" content="Reserva Los Manantiales | Mapa de la reserva">
+<meta property="og:description" content="Sitios patrimoniales, naturales e históricos de la Reserva Hídrica Natural Municipal Los Manantiales, Río Ceballos, Córdoba.">
 <meta property="og:image" content="img/logo-manantiales.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,13 +89,12 @@
   <section class="seccion-mapa" id="mapa" aria-labelledby="titulo-mapa">
     <h2 class="sr-only" id="titulo-mapa">Mapa de la reserva</h2>
     <div class="mapa-app">
-      <div class="panel" id="panel" role="region" aria-label="Senderos y lugares de la reserva"></div>
+      <div class="panel" id="panel" role="region" aria-label="Sitios de la reserva"></div>
       <p class="sr-only" id="anuncio" aria-live="polite"></p>
       <div class="map-wrap">
         <button class="reset" id="reset" type="button">Ver toda la reserva</button>
-        <p class="aviso" id="aviso" role="status" hidden></p>
         <p class="pista" id="pista" aria-hidden="true" hidden></p>
-        <div id="map" role="region" aria-label="Mapa interactivo de la reserva. La lista del panel tiene los mismos senderos y lugares."></div>
+        <div id="map" role="region" aria-label="Mapa interactivo de la reserva. La lista del panel tiene los mismos sitios."></div>
       </div>
     </div>
   </section>

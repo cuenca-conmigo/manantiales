@@ -86,13 +86,4 @@ export function pinSvg(tipo) {
   return `<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><g class="pinC pinC-${ic.color}"><path class="pinC-piedra" d="${PIEDRA}"/>${trazos}${puntos}</g></svg>`;
 }
 
-/* Muestra de línea de sendero: la dificultad se distingue por color y por tipo de línea */
-const TRAZO_SENDERO = {
-  alta: 'stroke="#b3452b" stroke-width="6" stroke-linecap="round"',
-  media: 'stroke="#c4622d" stroke-width="6" stroke-linecap="round" stroke-dasharray="10 8"',
-  baja: 'stroke="#d49a3c" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 11"'
-};
-export const muestraSendero = dif => `<svg class="swatch" viewBox="0 0 54 14" aria-hidden="true"><line x1="4" y1="7" x2="50" y2="7" ${TRAZO_SENDERO[dif] || TRAZO_SENDERO.media}/></svg>`;
-
 export const ICONO_VOLVER = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg>';
-export const ICONO_UBICACION = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>';
