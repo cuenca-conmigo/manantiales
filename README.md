@@ -67,7 +67,7 @@ La ficha de cada sitio muestra:
 - El **audio**, solo si el sitio tiene. Se titula con `audio_titulo` ("Escuchar testimonio" en La Agüita y la Pileta de Rizzo) o, si falta, "Escuchar".
 - Un **carrusel** con los `videos` primero (con su portada y un botón de reproducir) y después las `fotos`. Todo se abre en grande en un visor sobre la página.
 
-Subtipos con ícono (en `js/iconos.js`): `puesto`, `banadero`, `toma-agua`, `vado` (patrimonio rural), `pirca`, `mortero` (arqueológico), `naciente`, `plaza`, `cerro`, `piedra`, `arbol`, `cancha`, `virgen`, `mirador`, `cueva` (natural, paisajístico y simbólico), `camino` (vía o senda histórica) y `guardaparques` (referencias). Para sumar uno nuevo, agregar su dibujo y su nombre en `js/iconos.js`.
+Subtipos con ícono (en `js/iconos.js`): `puesto`, `banadero`, `toma-agua`, `vado` (patrimonio rural), `pirca`, `mortero` (patrimonio arqueológico), `naciente`, `plaza`, `cerro`, `piedra`, `arbol`, `cancha`, `virgen`, `mirador`, `cueva` (patrimonio natural, paisajístico y simbólico), `camino` (patrimonio vial) y `guardaparques` (referencias). Para sumar uno nuevo, agregar su dibujo y su nombre en `js/iconos.js`.
 
 Los sitios salen de la planilla de valores relevados (Categoría, Subcategoría, Sitio, Geolocalización y Descripción). Arroyo Mal Paso, La Herradura y Monte nativo no traen coordenadas en la planilla y se ubican aparte; el Destacamento de Guardaparques no está en la planilla y se suma como referencia. El resto de los sitios sin coordenadas no aparece en el mapa.
 ## Cómo se arman los datos y los medios
